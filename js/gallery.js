@@ -110,10 +110,10 @@ container.addEventListener('click', e => {
   const id = +liElem.dataset.id;
   const item = images.find(el => el.id === id);
 
-  if (!item || !item.original) {
-    console.error('Invalid item or missing original property:', item);
-    return;
-  }
+  // if (!item || !item.original) {
+  //   console.error('Invalid item or missing original property:', item);
+  //   return;
+  // }
 
   const instance = basicLightbox.create(`
     <img src="${item.original}">
