@@ -1,8 +1,10 @@
 const images = [
   {
     id: 1,
-    preview: "https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820__480.jpg",
-    original: "https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820_1280.jpg",
+    preview:
+      "https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820__480.jpg",
+    original:
+      "https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820_1280.jpg",
     description: "Hokkaido Flower",
   },
   {
@@ -71,7 +73,7 @@ const images = [
   },
 ];
 
-const container = document.querySelector('.gallery');
+const container = document.querySelector(".gallery");
 
 function imageTemplate(item) {
   return `
@@ -90,7 +92,7 @@ function imageTemplate(item) {
 }
 
 function imageListTemplate(images) {
-  const markup = images.map(imageTemplate).join('');
+  const markup = images.map(imageTemplate).join("");
   return markup;
 }
 
@@ -101,36 +103,38 @@ function render() {
 
 render();
 
-container.addEventListener('click', e => {
-  if (e.target === e.currentTarget) return;
+let instance;
+function closeModal(e) {
+  if (e.code === "Escape") instance.close();
+}
+
+container.addEventListener("click", (e) => {
+  if (e.target.className !== "gallery-image") return;
   e.preventDefault();
-  const liElem = e.target.closest('.gallery-item');
+  const liElem = e.target.closest(".gallery-item");
   if (!liElem) return;
 
   const id = +liElem.dataset.id;
-  const item = images.find(el => el.id === id);
+  const selectedItem = images.find((el) => el.id === id);
 
   // if (!item || !item.original) {
   //   console.error('Invalid item or missing original property:', item);
   //   return;
   // }
 
-  const instance = basicLightbox.create(`
-    <img src="${item.original}">
+  instance = basicLightbox.create(
+    `
+    <img src="${selectedItem.original}">
 `,
-{
-	onShow: instance => {
-    document.addEventListener('keydown', closeModal);
-  },
-	onClose: instance => {
-    document.removeEventListener('keydown', closeModal);
-  },
-},
-);
+    {
+      onShow: (instance) => {
+        document.addEventListener("keydown", closeModal);
+      },
+      onClose: (instance) => {
+        document.removeEventListener("keydown", closeModal);
+      },
+    }
+  );
 
-function closeModal(e){
-  if(e.code === 'Escape') instance.close();
-}
-
-instance.show();
+  instance.show();
 });
